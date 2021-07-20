@@ -1,15 +1,19 @@
 import numpy
 import pandas as pd
-import mysql.connector
-from mysql.connector import Error
+import sys
+
+HOST_NAME = "localhost"
+USER_NAME = "postgres"
+USER_PASSWORD = "admin"
+
 
 class AnalysisManager:  
 
-    def __init__(self, save_file):
-        self.save_file = save_file
+    def __init__(self, save_name):
+        self.save_name = save_name
     
     def connect_to_db(self):
-        self.connection = self.create_server_connection("localhost", "root", "j-vm")
+        self.connection = self.create_server_connection(HOST_NAME, USER_NAME, USER_PASSWORD)
         print(self.connection)  
         pass
 
@@ -17,19 +21,23 @@ class AnalysisManager:
         
         pass
 
-    def create_save_file(self):
+    def create_save(self):
         
-        self.connection = self.create_server_connection("localhost", "root", "j-vm")
+        self.connection = self.create_server_connection(HOST_NAME, USER_NAME, USER_PASSWORD)
 
         cursor = self.connection.cursor()
         try:
-            cursor.execute("CREATE DATABASE " + self.save_file)
+            cursor.execute("CREATE DATABASE " + self.save_name)
             print("Database created successfully")
         except Error as err:
             print(f"Error: '{err}'")
-        pass
+            sys.exit(1)
+        
+        self.db_connection = self.create_db_connection(HOST_NAME, USER_NAME, USER_PASSWORD, self.save_name)
+        self.execute_query(self.db_connection, "") 
+
     
-    def list_save_files(self):
+    def list_save_names(self):
         self.connect_to_db()
         pass
     
@@ -40,18 +48,3 @@ class AnalysisManager:
     def output_matches(self):
         
         pass
-
-    
-    def create_server_connection(self, host_name, user_name, user_password):
-        connection = None
-        try:
-            connection = mysql.connector.connect(
-                host=host_name,
-                user=user_name,
-                passwd=user_password
-            )
-            print("Database connection successful")
-        except Error as err:
-            print(f"Error: '{err}'")
-
-        return connection

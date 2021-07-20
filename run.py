@@ -42,7 +42,7 @@ def main(options):
 
     if options.action == 0:
         print("Printing Saves")
-        print(analysis_manager.list_save_files())
+        print(analysis_manager.list_save_names())
         pass
     if options.action == 1:
         print("Loading data")
@@ -58,7 +58,7 @@ def main(options):
         pass
     if options.action == 4:
         print("Creating a new save")
-        print(analysis_manager.create_save_file())
+        print(analysis_manager.create_save())
         pass
 
 if __name__ == "__main__":

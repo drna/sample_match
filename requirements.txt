@@ -1,2 +1,3 @@
 pandas
-mysql-connector-python
+psycopg2
+sqlalchemy
